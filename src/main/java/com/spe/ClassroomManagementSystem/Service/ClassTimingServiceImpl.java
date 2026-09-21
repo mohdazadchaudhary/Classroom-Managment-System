@@ -128,6 +128,18 @@ public class ClassTimingServiceImpl implements ClassTimingService {
     @Override
     public boolean saveInClassTiming(String classCode, Time startTimeFormat, Time endTimeFormat, Day day1, HttpSession session){
         Classroom classroom = classroomService.getClassroomByClassCode(classCode);
+        if (classroom == null) {
+            if (session != null) {
+                session.setAttribute("save_message", "Classroom does not exist.");
+            }
+            return false;
+        }
+        if (startTimeFormat == null || endTimeFormat == null || day1 == null || !startTimeFormat.before(endTimeFormat)) {
+            if (session != null) {
+                session.setAttribute("save_message", "Enter a valid day and time range.");
+            }
+            return false;
+        }
         System.out.println(classroom);
         List<ClassTiming> classTimingList = classTimingService.getByClassroomAndDay(classroom, day1);
 //        List<ClassTiming> classTimingList = classTimingRepository.getAllByClassroomAndDayOfTheWeek(classroom, day1);

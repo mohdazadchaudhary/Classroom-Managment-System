@@ -31,8 +31,15 @@ public class ClassroomController {
                                       @RequestParam(value = "projector", required = false) String projector,
                                       HttpSession session) {
         logger.trace("addClassroom called");
+        if (session.getAttribute("admin_login") == null) {
+            return new RedirectView("/LoginFirst.jsp");
+        }
+        if (classCode == null || classCode.trim().isEmpty() || capacity <= 0 || plugs < 0) {
+            session.setAttribute("class_save_msg", "Enter a classroom code, a positive capacity, and zero or more plugs.");
+            return new RedirectView("/AddClassroom.jsp");
+        }
         boolean projectorAvailable = (projector == null) ? false : true;
-        Classroom cr = new Classroom(classCode, capacity, projectorAvailable, plugs);
+        Classroom cr = new Classroom(classCode.trim(), capacity, projectorAvailable, plugs);
         String class_save_msg = classroomService.saveClassroom(cr);
         session.setAttribute("class_save_msg", class_save_msg);
         RedirectView rv = new RedirectView();
@@ -43,6 +50,9 @@ public class ClassroomController {
     @RequestMapping("/getAllClassrooms")
     public RedirectView getAllClassrooms(HttpSession session){
         logger.trace("getAllClassroom called");
+        if (session.getAttribute("admin_login") == null) {
+            return new RedirectView("/LoginFirst.jsp");
+        }
         List<Classroom> classroomList= classroomService.findAllClassrooms();
         session.setAttribute("classroomList", classroomList);
         RedirectView rv = new RedirectView();
@@ -64,8 +74,23 @@ public class ClassroomController {
             HttpSession session
     ){
         logger.trace("getAvailableClasses called");
-        Time startTimeFormat = Time.valueOf(startTime +":00");
-        Time endTimeFormat = Time.valueOf(endTime +":00");
+        if (session.getAttribute("login") == null || capacity <= 0 || plugs < 0 || date == null) {
+            session.setAttribute("req_save_msg", "Log in and enter valid classroom requirements.");
+            return new RedirectView("/LoginFirst.jsp");
+        }
+        Time startTimeFormat;
+        Time endTimeFormat;
+        try {
+            startTimeFormat = Time.valueOf(startTime + ":00");
+            endTimeFormat = Time.valueOf(endTime + ":00");
+        } catch (IllegalArgumentException e) {
+            session.setAttribute("req_save_msg", "Enter times in HH:mm format.");
+            return new RedirectView("/ProfessorDashboard.jsp");
+        }
+        if (!startTimeFormat.before(endTimeFormat)) {
+            session.setAttribute("req_save_msg", "Start time must be before end time.");
+            return new RedirectView("/ProfessorDashboard.jsp");
+        }
         Day day = Day.SUNDAY; //random initialization
         switch (DateUtils.getDayOfTheWeekFromDate(date)) {
             case 1:  day = Day.SUNDAY; break;

@@ -52,6 +52,13 @@ public class RegistrationController {
                                      @RequestParam("password") String password,
                                      HttpSession session) {
         logger.trace("registerUser called");
+        if (session.getAttribute("admin_login") == null) {
+            return new RedirectView("/LoginFirst.jsp");
+        }
+        if (!isSupportedUserType(usertype)) {
+            session.setAttribute("msg", "Select a valid user type.");
+            return new RedirectView("/RegisterUser.jsp");
+        }
         Login login = new Login();
         login.setUserType(usertype);
         login.setPassword(password);
@@ -131,6 +138,12 @@ public class RegistrationController {
                                    HttpSession session) {
         logger.trace("selfSignup called for username='{}', role='{}'", username, usertype);
         RedirectView rv = new RedirectView();
+
+        if (!isSupportedUserType(usertype)) {
+            session.setAttribute("signup_error", "Select a valid user type.");
+            rv.setUrl("/Signup.jsp");
+            return rv;
+        }
 
         Login login = new Login();
         login.setUserType(usertype);
@@ -257,5 +270,10 @@ public class RegistrationController {
             session.setAttribute("admin_msg", "Error: " + e.getMessage());
         }
         return new RedirectView("/getPendingUsers");
+    }
+
+    private boolean isSupportedUserType(String usertype) {
+        return "professor".equals(usertype) || "ta".equals(usertype)
+                || "committee".equals(usertype) || "sac".equals(usertype);
     }
 }

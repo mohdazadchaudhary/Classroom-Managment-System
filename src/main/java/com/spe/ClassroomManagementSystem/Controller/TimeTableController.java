@@ -29,24 +29,24 @@ public class TimeTableController {
             @RequestParam("endTime") String endTime,
             HttpSession session){
         logger.trace("saveInClassTimings called");
-        Day day1 = Day.SUNDAY;//initialization
-        switch (day){
-            case "SUNDAY": day1=Day.SUNDAY;break;
-            case "MONDAY": day1=Day.MONDAY;break;
-            case "TUESDAY": day1=Day.TUESDAY;break;
-            case "WEDNESDAY": day1=Day.WEDNESDAY;break;
-            case "THURSDAY": day1=Day.THURSDAY;break;
-            case "FRIDAY": day1=Day.FRIDAY;break;
-            case "SATURDAY": day1=Day.SATURDAY;break;
+        RedirectView rv = new RedirectView("AddTimetable.jsp");
+        if (session.getAttribute("admin_login") == null) {
+            session.setAttribute("save_message", "Administrator login is required.");
+            rv.setUrl("LoginFirst.jsp");
+            return rv;
         }
-        Time startTimeFormat = Time.valueOf(startTime +":00");
-        Time endTimeFormat = Time.valueOf(endTime +":00");
-
-        boolean retVal = classTimingService.saveInClassTiming(classCode, startTimeFormat, endTimeFormat, day1, session);
-        //System.out.println("retVal = " + retVal);
-        //System.out.println(session.getAttribute("save_messsage"));
-        RedirectView rv = new RedirectView();
-        rv.setUrl("AddTimetable.jsp");
+        try {
+            Day day1 = Day.valueOf(day.trim().toUpperCase());
+            Time startTimeFormat = Time.valueOf(startTime + ":00");
+            Time endTimeFormat = Time.valueOf(endTime + ":00");
+            if (!startTimeFormat.before(endTimeFormat)) {
+                session.setAttribute("save_message", "Start time must be before end time.");
+                return rv;
+            }
+            classTimingService.saveInClassTiming(classCode, startTimeFormat, endTimeFormat, day1, session);
+        } catch (IllegalArgumentException e) {
+            session.setAttribute("save_message", "Enter a valid day and time in HH:mm format.");
+        }
         return rv;
 
     }
