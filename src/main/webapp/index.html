@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IIIT-B Classroom Manager</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+
+<div class="container">
+    <%-- Flash: shown after successful self-signup --%>
+    <%
+        String signupSuccess = (String) session.getAttribute("signup_success");
+        if (signupSuccess != null) {
+            session.removeAttribute("signup_success");
+    %>
+    <div style="background:#d4edda;border:1px solid #c3e6cb;color:#155724;border-radius:6px;padding:12px 16px;margin:16px 0;font-size:13px;">
+        &#10003; <%= signupSuccess %>
+    </div>
+    <% } %>
+
+    <div class="login-container" style="float: right">
+        <div id="output"></div>
+        <div class="avatar"></div>
+        <h4>Classroom Management</h4><br>
+        <div class="form-box">
+            <form action="/login" method="">
+                <select id="usertype" name="usertype" required>
+                    <option name="select_usertype" value="">Select User Type</option>
+                    <option name="admin" value="admin">Admin </option>
+                    <option name="professor" value="professor">Professor </option>
+                    <option name="ta" value="ta">TA </option>
+                    <option name="committee" value="committee">Committee </option>
+                    <option name="sac" value="sac">SAC </option>
+                </select>
+                <input id="username" name="username" type="text" placeholder="username" required>
+                <input id="password" name="password" type="password" placeholder="password" required>
+                <button class="btn btn-info btn-block login" type="submit">Login</button>
+            </form>
+            <div style="text-align:center;margin-top:12px;font-size:13px;">
+                Don't have an account?
+                <a href="/Signup.jsp" style="color:#563D7C;font-weight:600;">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
