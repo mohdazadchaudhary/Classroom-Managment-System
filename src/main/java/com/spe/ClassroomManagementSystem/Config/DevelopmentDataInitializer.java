@@ -1,12 +1,14 @@
 package com.spe.ClassroomManagementSystem.Config;
 
 import com.spe.ClassroomManagementSystem.Models.Login;
+import com.spe.ClassroomManagementSystem.Models.Professor;
 import com.spe.ClassroomManagementSystem.Models.Classroom;
 import com.spe.ClassroomManagementSystem.Models.ClassTiming;
 import com.spe.ClassroomManagementSystem.Models.Day;
 import com.spe.ClassroomManagementSystem.Repository.ClassroomRepository;
 import com.spe.ClassroomManagementSystem.Repository.ClassTimingRepository;
 import com.spe.ClassroomManagementSystem.Repository.LoginRepository;
+import com.spe.ClassroomManagementSystem.Repository.ProfessorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -24,17 +26,22 @@ public class DevelopmentDataInitializer implements ApplicationRunner {
     private static final Logger logger = LoggerFactory.getLogger(DevelopmentDataInitializer.class);
     private static final String ADMIN_USERNAME = "azadchaudhary03@gmail.com";
     private static final String ADMIN_PASSWORD = "Admin@123";
+    private static final String PROFESSOR_USERNAME = "demo.professor";
+    private static final String PROFESSOR_PASSWORD = "Professor@123";
 
     private final LoginRepository loginRepository;
     private final ClassroomRepository classroomRepository;
     private final ClassTimingRepository classTimingRepository;
+    private final ProfessorRepository professorRepository;
 
     public DevelopmentDataInitializer(LoginRepository loginRepository,
                                       ClassroomRepository classroomRepository,
-                                      ClassTimingRepository classTimingRepository) {
+                                      ClassTimingRepository classTimingRepository,
+                                      ProfessorRepository professorRepository) {
         this.loginRepository = loginRepository;
         this.classroomRepository = classroomRepository;
         this.classTimingRepository = classTimingRepository;
+        this.professorRepository = professorRepository;
     }
 
     @Override
@@ -45,6 +52,16 @@ public class DevelopmentDataInitializer implements ApplicationRunner {
             admin.setStatus("approved");
             loginRepository.save(admin);
             logger.info("Created the local development administrator account");
+        }
+
+        Login professorLogin = loginRepository.findByUserNameAndUserType(PROFESSOR_USERNAME, "professor");
+        if (professorLogin == null) {
+            professorLogin = new Login("professor", PROFESSOR_USERNAME, PROFESSOR_PASSWORD);
+            professorLogin.setStatus("approved");
+            professorLogin = loginRepository.save(professorLogin);
+            professorRepository.save(new Professor(PROFESSOR_USERNAME, "Demo Professor",
+                    "demo.professor@example.test", professorLogin));
+            logger.info("Created the local development professor account");
         }
 
         Classroom l101 = seedClassroom("L-101", 60, true, 20);

@@ -57,7 +57,18 @@ Select **admin** on the login screen and use the credentials above. The seeded
 account is meant for local development only; change the password and use a
 secure secret-management mechanism before deploying anywhere public.
 
-## 5. Sample data
+## 5. Demo professor account
+
+A fresh database also receives this approved account for searching and
+requesting classrooms:
+
+| Field | Value |
+| --- | --- |
+| User type | `professor` |
+| Username | `demo.professor` |
+| Password | `Professor@123` |
+
+## 6. Sample data
 
 The application seeds development-only sample classrooms and class timings
 when their records do not exist. Fresh databases receive `L-101`, `L-202`, and
@@ -65,7 +76,7 @@ when their records do not exist. Fresh databases receive `L-101`, `L-202`, and
 search and timetable flows immediately after startup. Existing records are not
 overwritten.
 
-## 6. Run tests
+## 7. Run tests
 
 In a second terminal, with the same `JAVA_HOME` setting, run:
 
@@ -73,7 +84,7 @@ In a second terminal, with the same `JAVA_HOME` setting, run:
 .\mvnw.cmd test
 ```
 
-## 7. Reset local development data
+## 8. Reset local development data
 
 This permanently removes the local database and recreates it on the next
 startup:
