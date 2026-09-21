@@ -52,6 +52,7 @@
     <!-- Navbar content -->
     <a class="navbar-brand" href="#">IIIT-B Clasroom Manager</a>
     <ul class="nav navbar-nav navbar-left">
+        <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/viewClassrooms">View Classrooms</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">

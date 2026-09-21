@@ -46,6 +46,10 @@
 <nav class="navbar navbar-fixed-top navbar-light" style="background-color: #563D7C; ">
     <!-- Navbar content -->
     <a class="navbar-brand" href="#">IIIT-B Clasroom Manager</a>
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/viewClassrooms">View Classrooms</a></li>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
         <li><a href="/destroy" style="margin-right: 10px"><span class="glyphicon glyphicon-log-in" ></span> Logout</a></li>
     </ul>

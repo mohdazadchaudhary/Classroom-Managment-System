@@ -17,8 +17,10 @@
 %>
 <nav class="navbar navbar-fixed-top navbar-light" style="background-color: #563D7C;">
     <a class="navbar-brand" href="#">IIIT-B Classroom Manager</a>
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="/dashboard">Dashboard</a></li>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="javascript:history.back()">Back</a></li>
         <li><a href="/destroy">Logout</a></li>
     </ul>
 </nav>

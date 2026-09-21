@@ -109,6 +109,7 @@
 <nav class="navbar navbar-fixed-top navbar-light" style="background-color: #563D7C;">
     <a class="navbar-brand" href="AdminDashboard.jsp">IIIT-B Classroom Manager</a>
     <ul class="nav navbar-nav navbar-left">
+        <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="RegisterUser.jsp">Add User</a></li>
         <li><a href="/getAllRequests">View Requests</a></li>
         <li><a href="AddClassroom.jsp">Add Classroom</a></li>
