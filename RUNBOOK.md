@@ -59,9 +59,11 @@ secure secret-management mechanism before deploying anywhere public.
 
 ## 5. Sample data
 
-The application also seeds development-only sample classrooms, class timings,
-and accounts when their records do not exist. This makes it possible to try the
-classroom search, timetable, and request flows immediately after startup.
+The application seeds development-only sample classrooms and class timings
+when their records do not exist. Fresh databases receive `L-101`, `L-202`, and
+`S-301`, with four timetable entries. This makes it possible to try classroom
+search and timetable flows immediately after startup. Existing records are not
+overwritten.
 
 ## 6. Run tests
 
