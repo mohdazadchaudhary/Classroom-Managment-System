@@ -47,13 +47,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public boolean checkCredentials(String username, String password, String userType, HttpSession session) {
         session.setAttribute("userType", userType);
-        if (userType.equals("admin")){
-            if (username.equals("admin") && password.equals("admin")){
-                return true;
-            }
-        }
         Login user = loginRepository.findByUserNameAndUserType(username, userType);
-        System.out.println(user);
 
         if (user == null) {
             return false;

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import javax.servlet.http.HttpSession;
 @SpringBootTest
 class LoginServiceImplTest {
     @Autowired
@@ -33,5 +35,16 @@ class LoginServiceImplTest {
                 new Login("professor", "shriyakabra97", "password")
         );
         assertEquals("shriyakabra97", loginService.findByLoginId(loginId).getUserName());
+    }
+
+    @Test
+    void authenticatesAnApprovedAdministratorFromTheDatabase() {
+        String username = "azadchaudhary03@gmail.com";
+        String password = "Admin@123";
+        Login admin = new Login("admin", username, password);
+        admin.setStatus("approved");
+        when(loginRepository.findByUserNameAndUserType(username, "admin")).thenReturn(admin);
+
+        assertTrue(loginService.checkCredentials(username, password, "admin", mock(HttpSession.class)));
     }
 }
