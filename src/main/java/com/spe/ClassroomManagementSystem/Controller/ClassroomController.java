@@ -60,6 +60,16 @@ public class ClassroomController {
         return rv;
     }
 
+    @RequestMapping("/viewClassrooms")
+    public RedirectView viewClassrooms(HttpSession session) {
+        logger.trace("viewClassrooms called");
+        if (session.getAttribute("admin_login") == null && session.getAttribute("login") == null) {
+            return new RedirectView("/LoginFirst.jsp");
+        }
+        session.setAttribute("classroomList", classroomService.findAllClassrooms());
+        return new RedirectView("/ClassroomList.jsp");
+    }
+
 
     @RequestMapping("/getAvailableClasses")
     public RedirectView getAvailableClasses(

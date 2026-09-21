@@ -38,6 +38,7 @@ if(session.getAttribute("admin_login")!=null){
         <li><a href="RegisterUser.jsp"> Add User </a></li>
         <li><a href="/getAllRequests">View Requests</a></li>
         <li><a href="AddClassroom.jsp">Add Classroom</a> </li>
+        <li><a href="/viewClassrooms">View Classrooms</a> </li>
         <li><a href="/getAllClassrooms">Add Timetable</a> </li>
         <li><a href="/getPendingUsers">Pending Signups</a></li>
     </ul>
